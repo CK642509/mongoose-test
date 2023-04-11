@@ -31,8 +31,14 @@ const requestListener = async (req, res) => {
   req.on('data', chunk => {
     body += chunk;
   });
-
-  if (req.url == '/rooms' && req.method == 'GET') {
+  
+  if (req.url == '/' && req.method == 'GET') {
+    res.writeHead(200, headers);
+    res.write(JSON.stringify({
+      status: 'success'
+    }));
+    res.end();
+  } else if (req.url == '/rooms' && req.method == 'GET') {
     const rooms = await Room.find();
     // .find() 為非同步語法，加上 await 讓它回傳資料再繼續往下跑程式碼
 
@@ -136,4 +142,4 @@ const requestListener = async (req, res) => {
 };
 
 const server = http.createServer(requestListener);
-server.listen(process.env.PORT);
+server.listen(3000);
